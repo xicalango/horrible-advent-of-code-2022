@@ -8,6 +8,8 @@
 
 #include "input/day2-guide.hpp"
 
+// g++ -ftemplate-depth=5250 -o day2 day2.cc
+
 // #region symbols
 
 struct Rock;

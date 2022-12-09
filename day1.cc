@@ -10,7 +10,7 @@
 #include "input/day1_example_input.hpp"
 #include "input/day1-calories.hpp"
 
-
+// g++ -o day1 day1.cc
 
 
 template<typename List, typename CurrentMax>
