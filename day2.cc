@@ -209,7 +209,7 @@ struct PRINT<ScoreSimple<A, B>> {
 template<char A, char B>
 struct PRINT<ScoreAdvanced<A, B>> {
     static void print() {
-        std::cout << "ScoreAdvanced(" << A << ',' << B << ") = " << ScoreSimple<A, B>::Value << std::endl;
+        std::cout << "ScoreAdvanced(" << A << ',' << B << ") = " << ScoreAdvanced<A, B>::Value << std::endl;
     }
 };
 
