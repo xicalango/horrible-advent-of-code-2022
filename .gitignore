@@ -33,5 +33,7 @@
 
 # Added by aweld
 
+*.s
 day1
+day2
 .vscode
