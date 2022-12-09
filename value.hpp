@@ -15,4 +15,13 @@ struct I
   static const int Value = i;
 };
 
+template<char a, char b>
+struct C_TUPLE
+{
+  typedef char Type;
+
+  static const char A = a;
+  static const char B = b;
+};
+
 #endif

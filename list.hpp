@@ -3,6 +3,8 @@
 
 #include <iostream>
 
+#include "value.hpp"
+
 template<typename H, typename T>
 struct L
 {
@@ -11,22 +13,6 @@ struct L
 };
 
 struct LE {};
-
-template<typename List, char sep = '\n'>
-struct PRINT_LIST {
-
-    static void print() {
-        std::cout << List::Head::Value << sep;
-        PRINT_LIST<typename List::Tail, sep>::print();
-    }
-
-};
-
-template<char sep>
-struct PRINT_LIST<LE, sep> {
-    static void print() {
-    }
-};
 
 template<typename List>
 void print() {
@@ -60,6 +46,44 @@ template<typename List>
 struct SLICE<List, 0>
 {
   typedef List Result;
+};
+
+template<typename List>
+struct LEN {
+  static const int ResultValue = 1 + LEN<typename List::Tail>::ResultValue;
+};
+
+template<>
+struct LEN<LE> {
+  static const int ResultValue = 0;
+};
+
+
+template<typename List>
+struct SUM_INT {
+
+    static const int ResultValue = List::Head::Value + SUM_INT<typename List::Tail>::ResultValue;
+
+    typedef I<ResultValue> Result;
+};
+
+template<>
+struct SUM_INT<LE> {
+    static const int ResultValue = 0;
+    typedef I<ResultValue> Result;
+};
+
+template<typename List, template<typename A> typename F>
+struct MAP {
+    typedef L < 
+            typename F<typename List::Head>::Result, 
+            typename MAP<typename List::Tail, F>::Result 
+        > Result;
+};
+
+template<template<typename A> typename F>
+struct MAP<LE, F> {
+    typedef LE Result;
 };
 
 #endif
