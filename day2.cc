@@ -10,8 +10,6 @@
 
 // #region symbols
 
-// #region definition
-
 struct Rock;
 struct Paper;
 struct Scissors;
@@ -20,43 +18,25 @@ struct Rock {
     typedef Rock Draw;
     typedef Paper Win;
     typedef Scissors Lost;
+
+    static const int Score = 1;
 };
 
 struct Paper {
     typedef Rock Lost;
     typedef Paper Draw;
     typedef Scissors Win;
+
+    static const int Score = 2;
 };
 
 struct Scissors {
     typedef Rock Win;
     typedef Paper Lost;
     typedef Scissors Draw;
+
+    static const int Score = 3;
 };
-
-// #endregion
-
-// #region scores
-
-template<typename Sign>
-struct SignScore;
-
-template<>
-struct SignScore<Rock> {
-    static const int ResultValue = 1;
-};
-
-template<>
-struct SignScore<Paper> {
-    static const int ResultValue = 2;
-};
-
-template<>
-struct SignScore<Scissors> {
-    static const int ResultValue = 3;
-};
-
-// #endregion
 
 // #endregion
 
@@ -73,51 +53,51 @@ struct Score;
 
 template<>
 struct Score<Rock, Rock> {
-    static const int ResultValue = ScoreDraw + SignScore<Rock>::ResultValue;
+    static const int ResultValue = ScoreDraw + Rock::Score;
 };
 
 template<>
 struct Score<Rock, Paper> {
-    static const int ResultValue = ScoreWin + SignScore<Paper>::ResultValue;
+    static const int ResultValue = ScoreWin + Paper::Score;
 };
 
 template<>
 struct Score<Rock, Scissors> {
-    static const int ResultValue = ScoreLost + SignScore<Scissors>::ResultValue;
+    static const int ResultValue = ScoreLost + Scissors::Score;
 };
 
 // Op: Paper
 
 template<>
 struct Score<Paper, Rock> {
-    static const int ResultValue = ScoreLost + SignScore<Rock>::ResultValue;
+    static const int ResultValue = ScoreLost + Rock::Score;
 };
 
 template<>
 struct Score<Paper, Paper> {
-    static const int ResultValue = ScoreDraw + SignScore<Paper>::ResultValue;
+    static const int ResultValue = ScoreDraw + Paper::Score;
 };
 
 template<>
 struct Score<Paper, Scissors> {
-    static const int ResultValue = ScoreWin + SignScore<Scissors>::ResultValue;
+    static const int ResultValue = ScoreWin + Scissors::Score;
 };
 
 // Op: Scissors
 
 template<>
 struct Score<Scissors, Rock> {
-    static const int ResultValue = ScoreWin + SignScore<Rock>::ResultValue;
+    static const int ResultValue = ScoreWin + Rock::Score;
 };
 
 template<>
 struct Score<Scissors, Paper> {
-    static const int ResultValue = ScoreLost + SignScore<Paper>::ResultValue;
+    static const int ResultValue = ScoreLost + Paper::Score;
 };
 
 template<>
 struct Score<Scissors, Scissors> {
-    static const int ResultValue = ScoreDraw + SignScore<Scissors>::ResultValue;
+    static const int ResultValue = ScoreDraw + Scissors::Score;
 };
 
 // #endregion
