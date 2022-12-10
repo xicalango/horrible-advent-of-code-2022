@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "value.hpp"
+#include "control.hpp"
 
 template<typename H, typename T>
 struct L
@@ -84,6 +85,49 @@ struct MAP {
 template<template<typename A> typename F>
 struct MAP<LE, F> {
     typedef LE Result;
+};
+
+template<typename List, template<typename A> typename Filter>
+struct FILTER {
+
+  typedef FILTER<typename List::Tail, Filter> TailFilter;
+
+  typedef typename IF<
+    Filter<typename List::Head>::ResultValue,
+    L<typename List::Head, typename TailFilter::Result>,
+    typename TailFilter::Result
+  >::Result Result;
+
+};
+
+template<template<typename A> typename Filter>
+struct FILTER<LE, Filter> {
+  typedef LE Result;
+};
+
+template<typename List1, typename List2>
+struct CONCAT {
+  typedef L<typename List1::Head, typename CONCAT<typename List1::Tail, List2>::Result> Result;
+};
+
+template<typename List2>
+struct CONCAT<LE, List2> {
+  typedef List2 Result;
+};
+
+template<typename List, typename V>
+struct ZIP_WITH_INDEX {
+
+  typedef L<
+    TUPLE<V, typename List::Head>, 
+    typename ZIP_WITH_INDEX<typename List::Tail, typename INC<V>::Result>::Result
+  > Result;
+
+};
+
+template<typename V>
+struct ZIP_WITH_INDEX<LE, V> {
+  typedef LE Result;
 };
 
 #endif

@@ -60,4 +60,14 @@ struct PRINT<C_TUPLE<a, b>> {
     }
 };
 
+template<typename A, typename B>
+struct PRINT<TUPLE<A, B>> {
+    static void print() {
+        std::cout << "T(" << std::endl;
+        PRINT<A>::print();
+        PRINT<B>::print();
+        std::cout << ")T" << std::endl;
+    }
+};
+
 #endif
