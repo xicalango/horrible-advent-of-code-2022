@@ -52,11 +52,13 @@ struct SLICE<List, 0>
 template<typename List>
 struct LEN {
   static const int ResultValue = 1 + LEN<typename List::Tail>::ResultValue;
+  typedef I<ResultValue> Result;
 };
 
 template<>
 struct LEN<LE> {
   static const int ResultValue = 0;
+  typedef I<ResultValue> Result;
 };
 
 
