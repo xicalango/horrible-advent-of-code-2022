@@ -1,5 +1,6 @@
 #include <iostream>
 #include <limits>
+#include <cmath>
 
 #include "list.hpp"
 #include "value.hpp"
@@ -100,6 +101,42 @@ struct CalcScore {
   typedef I<T::A::Value * T::B::Value> Result;
 };
 
+
+// #region task2
+
+template<typename T>
+struct Draw;
+
+template<int index, int regValue>
+struct Draw<TUPLE<I<index>, I<regValue>>> {
+  typedef typename IF<
+    /*when*/ (std::abs(((index-1) % 40) - regValue) <= 1),
+    /*then*/ C<'#'>,
+    /*else*/ C<'.'>
+  >::Result DrawChar;
+
+  typedef typename IF<
+    /*when*/ (index % 40 == 0),
+    /*then*/ C<'\n'>,
+    /*else*/ C<'\0'>
+  >::Result Endline;
+
+  typedef TUPLE<DrawChar, Endline> Result;
+};
+
+template<typename T>
+struct PrintScreen;
+
+template<char drawChar, char endLine>
+struct PrintScreen<TUPLE<C<drawChar>, C<endLine>>> {
+  static void run() {
+    std::cout << drawChar << endLine;
+  }
+};
+
+
+// #endregion
+
 typedef
   L<Noop,
   L<AddX<3>,
@@ -126,20 +163,22 @@ int main(void) {
     //PRINT<SimulationResult>::print();
 
     typedef typename ZIP_WITH_INDEX<SimulationResult, I<1>>::Result Zipped;
-    PRINT<Zipped>::print();
-
-    std::cout << std::endl;
+    //PRINT<Zipped>::print();
+    //std::cout << std::endl;
 
     typedef typename FILTER<Zipped, FilterRelevantLine>::Result Filtered;
-    PRINT<Filtered>::print();
-
-    std::cout << std::endl;
+    // PRINT<Filtered>::print();
+    // std::cout << std::endl;
 
     typedef typename MAP<Filtered, CalcScore>::Result Scores;
-    PRINT<Scores>::print();
+    // PRINT<Scores>::print();
 
     int result = SUM_INT<Scores>::ResultValue;
     std::cout << "result: " << result << std::endl;
+
+    typedef typename MAP<Zipped, Draw>::Result Screen;
+    RUN<Screen, PrintScreen>::run();
+    std::cout << std::endl;
   }
 
   {
@@ -150,19 +189,22 @@ int main(void) {
     //PRINT<SimulationResult>::print();
 
     typedef typename ZIP_WITH_INDEX<SimulationResult, I<1>>::Result Zipped;
-    PRINT<Zipped>::print();
-
-    std::cout << std::endl;
+    //PRINT<Zipped>::print();
+    //std::cout << std::endl;
 
     typedef typename FILTER<Zipped, FilterRelevantLine>::Result Filtered;
-    PRINT<Filtered>::print();
+    // PRINT<Filtered>::print();
 
-    std::cout << std::endl;
+    // std::cout << std::endl;
 
     typedef typename MAP<Filtered, CalcScore>::Result Scores;
-    PRINT<Scores>::print();
+    // PRINT<Scores>::print();
 
     int result = SUM_INT<Scores>::ResultValue;
     std::cout << "result: " << result << std::endl;
+  
+    typedef typename MAP<Zipped, Draw>::Result Screen;
+    RUN<Screen, PrintScreen>::run();
+    std::cout << std::endl;
   }
 }

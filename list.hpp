@@ -130,4 +130,22 @@ struct ZIP_WITH_INDEX<LE, V> {
   typedef LE Result;
 };
 
+template<typename List, template<typename A> typename Program>
+struct RUN {
+
+  static void run() {
+    Program<typename List::Head>::run();
+    RUN<typename List::Tail, Program>::run();
+  }
+
+};
+
+template<template<typename A> typename Program>
+struct RUN<LE, Program> {
+
+  static void run() {
+  }
+
+};
+
 #endif
