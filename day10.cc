@@ -112,7 +112,7 @@ struct Draw<TUPLE<I<index>, I<regValue>>> {
   typedef typename IF<
     /*when*/ (std::abs(((index-1) % 40) - regValue) <= 1),
     /*then*/ C<'#'>,
-    /*else*/ C<'.'>
+    /*else*/ C<' '>
   >::Result DrawChar;
 
   typedef typename IF<
